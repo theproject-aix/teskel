@@ -297,6 +297,19 @@ function ToolFirewallVisual() {
   );
 }
 
+const OBS_BARS: Array<{ allowed: number; blocked: number }> = [
+  { allowed: 52, blocked: 11 }, { allowed: 60, blocked: 9 }, { allowed: 68, blocked: 12 },
+  { allowed: 72, blocked: 8 }, { allowed: 64, blocked: 14 }, { allowed: 58, blocked: 6 },
+  { allowed: 48, blocked: 10 }, { allowed: 56, blocked: 7 }, { allowed: 66, blocked: 13 },
+  { allowed: 74, blocked: 9 }, { allowed: 82, blocked: 11 }, { allowed: 78, blocked: 6 },
+  { allowed: 70, blocked: 10 }, { allowed: 62, blocked: 8 }, { allowed: 54, blocked: 12 },
+  { allowed: 46, blocked: 7 }, { allowed: 52, blocked: 9 }, { allowed: 60, blocked: 11 },
+  { allowed: 68, blocked: 13 }, { allowed: 76, blocked: 10 }, { allowed: 84, blocked: 8 },
+  { allowed: 80, blocked: 12 }, { allowed: 72, blocked: 9 }, { allowed: 64, blocked: 6 },
+  { allowed: 58, blocked: 14 }, { allowed: 66, blocked: 10 }, { allowed: 74, blocked: 8 },
+  { allowed: 82, blocked: 7 },
+];
+
 function ObservabilityVisual() {
   return (
     <div className="grid w-full grid-cols-1 gap-4 py-4 lg:grid-cols-4">
@@ -309,28 +322,24 @@ function ObservabilityVisual() {
           </div>
         </div>
         <div className="mt-3 flex h-24 items-end gap-1.5">
-          {Array.from({ length: 28 }).map((_, i) => {
-            const allowed = 40 + Math.sin(i * 0.6) * 25 + Math.random() * 12;
-            const blocked = 8 + Math.cos(i * 0.4) * 6 + Math.random() * 4;
-            return (
-              <div key={i} className="flex flex-1 flex-col gap-px">
-                <motion.div
-                  initial={{ height: 0 }}
-                  whileInView={{ height: `${blocked}%` }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.4 + i * 0.02, ease: [0.16, 1, 0.3, 1] }}
-                  className="rounded-t bg-rose-400/70"
-                />
-                <motion.div
-                  initial={{ height: 0 }}
-                  whileInView={{ height: `${allowed}%` }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.3 + i * 0.02, ease: [0.16, 1, 0.3, 1] }}
-                  className="rounded-t bg-gradient-to-t from-mint-400/40 to-mint-300"
-                />
-              </div>
-            );
-          })}
+          {OBS_BARS.map((d, i) => (
+            <div key={i} className="flex h-full flex-1 flex-col justify-end gap-px">
+              <motion.div
+                initial={{ height: 0 }}
+                whileInView={{ height: `${d.blocked}%` }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.6, delay: 0.4 + i * 0.02, ease: [0.16, 1, 0.3, 1] }}
+                className="w-full rounded-t bg-rose-400/70"
+              />
+              <motion.div
+                initial={{ height: 0 }}
+                whileInView={{ height: `${d.allowed}%` }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.6, delay: 0.3 + i * 0.02, ease: [0.16, 1, 0.3, 1] }}
+                className="w-full rounded-t bg-gradient-to-t from-mint-400/40 to-mint-300"
+              />
+            </div>
+          ))}
         </div>
       </div>
       <div className="flex flex-col gap-3 lg:col-span-1">

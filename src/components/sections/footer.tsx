@@ -4,11 +4,38 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Logo } from "@/components/ui/logo";
 
-const FOOTER_LINKS = {
-  Product: ["Gateway", "Red-Team", "Guardrails", "Data Shield", "Tool Firewall", "Observability"],
-  Solutions: ["Finance", "Healthcare", "Government", "Customer Support", "Developer Agents"],
-  Resources: ["Documentation", "API Reference", "Security", "Changelog", "Status", "Blog"],
-  Company: ["About", "Customers", "Pricing", "Careers", "Contact", "Press"],
+const FOOTER_LINKS: Record<string, Array<{ label: string; href: string }>> = {
+  Product: [
+    { label: "Features", href: "/features" },
+    { label: "Gateway", href: "/features" },
+    { label: "Red-Team", href: "/features" },
+    { label: "Guardrails", href: "/features" },
+    { label: "Pricing", href: "/pricing" },
+    { label: "Changelog", href: "/changelog" },
+  ],
+  Solutions: [
+    { label: "Finance", href: "/customers" },
+    { label: "Healthcare", href: "/customers" },
+    { label: "Government", href: "/enterprise" },
+    { label: "Customer Support", href: "/customers" },
+    { label: "Developer Agents", href: "/docs" },
+  ],
+  Resources: [
+    { label: "Documentation", href: "/docs" },
+    { label: "API Reference", href: "/docs" },
+    { label: "Security", href: "/security" },
+    { label: "Compliance", href: "/compliance" },
+    { label: "Status", href: "#" },
+    { label: "Blog", href: "#" },
+  ],
+  Company: [
+    { label: "Customers", href: "/customers" },
+    { label: "Enterprise", href: "/enterprise" },
+    { label: "Pricing", href: "/pricing" },
+    { label: "Waitlist", href: "/waitlist" },
+    { label: "Sign in", href: "/login" },
+    { label: "Contact", href: "/waitlist" },
+  ],
 };
 
 export function Footer() {
@@ -49,12 +76,12 @@ export function Footer() {
               <h4 className="text-[11px] font-mono uppercase tracking-[0.2em] text-mist-400">{heading}</h4>
               <ul className="mt-4 space-y-2.5">
                 {items.map((item) => (
-                  <li key={item}>
+                  <li key={item.label}>
                     <Link
-                      href="#"
+                      href={item.href}
                       className="text-[13px] text-mist-200 transition-colors hover:text-white"
                     >
-                      {item}
+                      {item.label}
                     </Link>
                   </li>
                 ))}
@@ -70,8 +97,8 @@ export function Footer() {
           <div className="flex items-center gap-5 text-xs text-mist-400">
             <Link href="#" className="hover:text-white">Terms</Link>
             <Link href="#" className="hover:text-white">Privacy</Link>
-            <Link href="#" className="hover:text-white">Security</Link>
-            <Link href="#" className="hover:text-white">Cookies</Link>
+            <Link href="/security" className="hover:text-white">Security</Link>
+            <Link href="/compliance" className="hover:text-white">Compliance</Link>
           </div>
         </div>
       </div>

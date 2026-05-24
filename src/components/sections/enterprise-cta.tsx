@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -43,13 +44,17 @@ export function EnterpriseCTA() {
             </p>
 
             <div className="mt-9 flex flex-col items-center gap-3 sm:flex-row">
-              <Button size="lg" spotlight className="group">
-                Book Enterprise Demo
-                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-              </Button>
-              <Button size="lg" variant="secondary">
-                Download SOC 2 report
-              </Button>
+              <Link href="/waitlist">
+                <Button size="lg" spotlight className="group">
+                  Book Enterprise Demo
+                  <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+                </Button>
+              </Link>
+              <Link href="/compliance">
+                <Button size="lg" variant="secondary">
+                  Download SOC 2 report
+                </Button>
+              </Link>
             </div>
 
             <div className="mt-10 grid w-full max-w-3xl grid-cols-2 gap-4 border-t border-white/[0.06] pt-8 md:grid-cols-4">
