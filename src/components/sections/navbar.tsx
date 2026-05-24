@@ -9,20 +9,41 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
-  { label: "Features", href: "#features" },
-  { label: "Customers", href: "#customers" },
-  { label: "Documentation", href: "#docs" },
-  { label: "Enterprise", href: "#enterprise" },
+  { label: "Features", href: "#features", section: "features" },
+  { label: "Customers", href: "#customers", section: "customers" },
+  { label: "Pricing", href: "#pricing", section: "pricing" },
+  { label: "Enterprise", href: "#enterprise", section: "enterprise" },
 ];
 
 export function Navbar() {
   const { scrollY } = useScroll();
   const [scrolled, setScrolled] = React.useState(false);
   const [open, setOpen] = React.useState(false);
+  const [active, setActive] = React.useState<string | null>(null);
 
   useMotionValueEvent(scrollY, "change", (y) => {
     setScrolled(y > 24);
   });
+
+  React.useEffect(() => {
+    if (typeof window === "undefined") return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]) {
+          setActive(visible[0].target.id);
+        }
+      },
+      { rootMargin: "-40% 0px -55% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] },
+    );
+    NAV_ITEMS.forEach((item) => {
+      const el = document.getElementById(item.section);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <motion.header
@@ -59,32 +80,49 @@ export function Navbar() {
               backgroundColor: scrolled ? "rgba(15,17,24,0.85)" : "rgba(15,17,24,0.55)",
             }}
             transition={{ duration: 0.4 }}
-            className="flex items-center gap-0.5 rounded-full border border-white/[0.07] px-1 py-1 backdrop-blur-xl"
+            className="relative flex items-center gap-0.5 rounded-full border border-white/[0.07] px-1 py-1 backdrop-blur-xl"
           >
-            {NAV_ITEMS.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="group relative rounded-full px-4 py-1.5 text-[13px] font-medium text-mist-200 transition-colors hover:text-white"
-              >
-                <span className="relative z-10">{item.label}</span>
-                <span className="absolute inset-0 -z-10 rounded-full bg-white/0 transition-colors duration-300 group-hover:bg-white/[0.06]" />
-              </Link>
-            ))}
+            {NAV_ITEMS.map((item) => {
+              const isActive = active === item.section;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    "group relative rounded-full px-4 py-1.5 text-[13px] font-medium transition-colors",
+                    isActive ? "text-white" : "text-mist-200 hover:text-white",
+                  )}
+                >
+                  <span className="relative z-10">{item.label}</span>
+                  {isActive && (
+                    <motion.span
+                      layoutId="nav-active"
+                      className="absolute inset-0 -z-10 rounded-full bg-white/[0.08]"
+                      transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                    />
+                  )}
+                  {!isActive && (
+                    <span className="absolute inset-0 -z-10 rounded-full bg-white/0 transition-colors duration-300 group-hover:bg-white/[0.06]" />
+                  )}
+                </Link>
+              );
+            })}
           </motion.div>
         </div>
 
         {/* CTAs (right) */}
         <div className="hidden items-center gap-3 md:flex">
           <Link
-            href="#login"
+            href="/login"
             className="text-[13px] font-medium text-mist-200 transition-colors hover:text-white"
           >
             Log In
           </Link>
-          <Button size="sm" spotlight>
-            Start Building
-          </Button>
+          <Link href="/signup">
+            <Button size="sm" spotlight>
+              Start Building
+            </Button>
+          </Link>
         </div>
 
         {/* Mobile menu button */}
@@ -120,12 +158,15 @@ export function Navbar() {
                 ))}
                 <div className="mt-2 flex flex-col gap-2 border-t border-white/10 pt-3">
                   <Link
-                    href="#login"
+                    href="/login"
+                    onClick={() => setOpen(false)}
                     className="rounded-2xl px-4 py-3 text-sm font-medium text-mist-100 hover:bg-white/[0.05] hover:text-white"
                   >
                     Log In
                   </Link>
-                  <Button>Start Building</Button>
+                  <Link href="/signup" onClick={() => setOpen(false)}>
+                    <Button className="w-full">Start Building</Button>
+                  </Link>
                 </div>
               </div>
             </div>

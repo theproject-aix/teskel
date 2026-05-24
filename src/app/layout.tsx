@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { SmoothScroll } from "@/components/effects/smooth-scroll";
+import { CustomCursor } from "@/components/effects/custom-cursor";
+import { ScrollProgress } from "@/components/effects/scroll-progress";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -60,7 +63,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} dark`} suppressHydrationWarning>
-      <body className="font-sans antialiased">
+      <body className="font-sans antialiased md:cursor-none">
+        <SmoothScroll />
+        <ScrollProgress />
+        <CustomCursor />
         {children}
       </body>
     </html>

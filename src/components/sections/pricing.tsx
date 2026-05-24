@@ -77,17 +77,19 @@ const TIERS = [
   },
 ];
 
-export function Pricing() {
+export function Pricing({ showHeader = true }: { showHeader?: boolean } = {}) {
   return (
-    <section id="pricing" className="relative py-28 md:py-36">
+    <section id="pricing" className="relative py-20 md:py-28">
       <div className="container mx-auto max-w-6xl px-4">
-        <SectionHeader
-          eyebrow="Pricing"
-          title={<>Start free. <br className="hidden md:block" />Scale without surprises.</>}
-          description="Every plan includes the gateway, audit log, and the red-team engine. Pay for the scale and the controls you actually need."
-        />
+        {showHeader && (
+          <SectionHeader
+            eyebrow="Pricing"
+            title={<>Start free. <br className="hidden md:block" />Scale without surprises.</>}
+            description="Every plan includes the gateway, audit log, and the red-team engine. Pay for the scale and the controls you actually need."
+          />
+        )}
 
-        <div className="mt-16 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
+        <div className={cn("grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4", showHeader && "mt-16")}>
           {TIERS.map((tier, i) => (
             <motion.div
               key={tier.name}

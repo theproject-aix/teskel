@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, ShieldCheck, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -74,14 +75,18 @@ export function Hero() {
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.55 }}
           className="mt-10 flex flex-col items-center gap-3 sm:flex-row"
         >
-          <Button size="lg" spotlight className="group">
-            Enter Workspace
-            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-          </Button>
-          <Button size="lg" variant="secondary">
-            <Sparkles className="h-4 w-4" />
-            Book Enterprise Demo
-          </Button>
+          <Link href="/dashboard">
+            <Button size="lg" spotlight className="group">
+              Enter Workspace
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+            </Button>
+          </Link>
+          <Link href="/waitlist">
+            <Button size="lg" variant="secondary">
+              <Sparkles className="h-4 w-4" />
+              Book Enterprise Demo
+            </Button>
+          </Link>
         </motion.div>
 
         <motion.div
